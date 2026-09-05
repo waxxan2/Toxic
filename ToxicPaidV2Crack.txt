@@ -4640,4 +4640,4 @@ Gift:AddButton(
 
 local Credits = window:AddTab("Credits")
 
-Credits:AddLabel("Toxic Paid V2 Deobfuscated By 228")
+Credits:AddLabel("WOZZY İS KİNG")
