@@ -4543,302 +4543,6 @@ teleport:AddButton("Brawl Regular", function()
 end)
 
 
-local pets = window:AddTab(       "Crystals")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
--- Crystal data structure with exact names from your original code
-local crystalData = {
-    ["Blue Crystal"] = {
-        {name = "Blue Birdie", rarity = "Basic"},
-        {name = "Orange Hedgehog", rarity = "Basic"},
-        {name = "Blue Aura", rarity = "Basic"},
-        {name = "Red Kitty", rarity = "Basic"},
-        {name = "Dark Vampy", rarity = "Advanced"},
-        {name = "Blue Bunny", rarity = "Basic"},
-        {name = "Red Aura", rarity = "Basic"},
-        {name = "Blue Aura", rarity = "Basic"},
-        {name = "Green Aura", rarity = "Basic"},
-        {name = "Purple Aura", rarity = "Basic"},
-        {name = "Red Aura", rarity = "Basic"},
-        {name = "Yellow Aura", rarity = "Basic"}
-    },
-    ["Green Crystal"] = {
-        {name = "Silver Dog", rarity = "Basic"},
-        {name = "Green Aura", rarity = "Advanced"},
-        {name = "Dark Golem", rarity = "Advanced"},
-        {name = "Green Butterfly", rarity = "Advanced"},
-        {name = "Crimson Falcon", rarity = "Rare"},
-        {name = "Red Aura", rarity = "Basic"},
-        {name = "Blue Aura", rarity = "Basic"},
-        {name = "Green Aura", rarity = "Basic"},
-        {name = "Purple Aura", rarity = "Basic"},
-        {name = "Red Aura", rarity = "Basic"},
-        {name = "Yellow Aura", rarity = "Basic"}
-    },
-    ["Frost Crystal"] = {
-        {name = "Yellow Butterfly", rarity = "Advanced"},
-        {name = "Purple Dragon", rarity = "Rare"},
-        {name = "Blue Pheonix", rarity = "Epic"},
-        {name = "Orange Pegasus", rarity = "Rare"},
-        {name = "Lightning", rarity = "Rare"},
-        {name = "Electro", rarity = "Advanced"}
-    },
-    ["Mythical Crystal"] = {
-        {name = "Purple Falcon", rarity = "Rare"},
-        {name = "Red Dragon", rarity = "Rare"},
-        {name = "Blue Firecaster", rarity = "Epic"},
-        {name = "Golden Pheonix", rarity = "Epic"},
-        {name = "Power Lightning", rarity = "Rare"},
-        {name = "Dark Lightning", rarity = "Epic"}
-    },
-    ["Inferno Crystal"] = {
-        {name = "Red Firecaster", rarity = "Epic"},
-        {name = "Infernal Dragon", rarity = "Unique"},
-        {name = "White Pegasus", rarity = "Rare"},
-        {name = "Golden Pheonix", rarity = "Epic"},
-        {name = "Inferno", rarity = "Epic"},
-        {name = "Dark Storm", rarity = "Unique"}
-    },
-    ["Legends Crystal"] = {
-        {name = "Ultra Birdie", rarity = "Unique"},
-        {name = "Magic Butterfly", rarity = "Unique"},
-        {name = "Green Firecaster", rarity = "Epic"},
-        {name = "White Pheonix", rarity = "Epic"},
-        {name = "Supernova", rarity = "Epic"},
-        {name = "Purple Nova", rarity = "Unique"}
-    },
-    ["Muscle Elite Crystal"] = {
-        {name = "Frostwave Legends Penguin", rarity = "Rare"},
-        {name = "Phantom Genesis Dragon", rarity = "Rare"},
-        {name = "Dark Legends Manticore", rarity = "Epic"},
-        {name = "Ultimate Supernova Pegasus", rarity = "Epic"},
-        {name = "Aether Spirit Bunny", rarity = "Unique"},
-        {name = "Cybernetic Showdown Dragon", rarity = "Unique"}
-    },
-    ["Galaxy Oracle Crystal"] = {
-        {name = "Eternal Strike Leviathan", rarity = "Rare"},
-        {name = "Lightning Strike Phantom", rarity = "Epic"},
-        {name = "Darkstar Hunter", rarity = "Unique"},
-        {name = "Muscle King", rarity = "Unique"},
-        {name = "Azure Tundra", rarity = "Epic"},
-        {name = "Ultra Inferno", rarity = "Rare"}
-    },
-    ["Jungle Crystal"] = {
-        {name = "Entropic Blast", rarity = "Unique"},
-        {name = "Muscle Sensei", rarity = "Unique"},
-        {name = "Grand Supernova", rarity = "Epic"},
-        {name = "Neon Guardian", rarity = "Unique"},
-        {name = "Eternal Megastrike", rarity = "Unique"},
-        {name = "Golden Viking", rarity = "Epic"},
-        {name = "Astral Electro", rarity = "Epic"},
-        {name = "Dark Electro", rarity = "Epic"},
-        {name = "Enchanted Mirage", rarity = "Epic"},
-        {name = "Ultra Mirage", rarity = "Unique"},
-        {name = "Unstable Mirage", rarity = "Unique"}
-    }
-}
-
--- Function to collect all unique pets and auras
-local function getAllPetsAndAuras()
-    local allPets = {}
-    local allAuras = {}
-    
-    for crystalName, pets in pairs(crystalData) do
-        for _, pet in ipairs(pets) do
-            if string.find(pet.name, "Aura") then
-                if not allAuras[pet.name] then
-                    allAuras[pet.name] = {name = pet.name, rarity = pet.rarity, crystal = crystalName}
-                end
-            else
-                if not allPets[pet.name] then
-                    allPets[pet.name] = {name = pet.name, rarity = pet.rarity, crystal = crystalName}
-                end
-            end
-        end
-    end
-    
-    return allPets, allAuras
-end
-
--- Function to find which crystal contains a specific pet/aura
-local function findCrystalForItem(itemName)
-    for crystalName, pets in pairs(crystalData) do
-        for _, pet in ipairs(pets) do
-            if pet.name == itemName then
-                return crystalName
-            end
-        end
-    end
-    return nil
-end
-
--- Variables to track current selections
-local selectedPet = ""
-local selectedAura = ""
-
--- Get all pets and auras
-local allPets, allAuras = getAllPetsAndAuras()
-
-pets:AddLabel("=== Buy pets and auras ===")
-
--- Pet dropdown
-local petDropdown = pets:AddDropdown("Select pet", function(text)
-    selectedPet = text
-    local crystal = findCrystalForItem(text)
-    print("Pet selected: " .. text .. " (Found in: " .. (crystal or "Unknown") .. ")")
-end)
-
--- Add all pets manually (sorted by rarity)
--- Basic Pets
-petDropdown:Add("Blue Birdie (Basic)")
-petDropdown:Add("Orange Hedgehog (Basic)")
-petDropdown:Add("Red Kitty (Basic)")
-petDropdown:Add("Blue Bunny (Basic)")
-petDropdown:Add("Silver Dog (Basic)")
-
--- Advanced Pets
-petDropdown:Add("Dark Vampy (Advanced)")
-petDropdown:Add("Dark Golem (Advanced)")
-petDropdown:Add("Green Butterfly (Advanced)")
-petDropdown:Add("Yellow Butterfly (Advanced)")
-
--- Rare Pets
-petDropdown:Add("Crimson Falcon (Rare)")
-petDropdown:Add("Purple Dragon (Rare)")
-petDropdown:Add("Orange Pegasus (Rare)")
-petDropdown:Add("Purple Falcon (Rare)")
-petDropdown:Add("Red Dragon (Rare)")
-petDropdown:Add("White Pegasus (Rare)")
-petDropdown:Add("Frostwave Legends Penguin (Rare)")
-petDropdown:Add("Phantom Genesis Dragon (Rare)")
-petDropdown:Add("Eternal Strike Leviathan (Rare)")
-
--- Epic Pets
-petDropdown:Add("Blue Pheonix (Epic)")
-petDropdown:Add("Blue Firecaster (Epic)")
-petDropdown:Add("Golden Pheonix (Epic)")
-petDropdown:Add("Red Firecaster (Epic)")
-petDropdown:Add("Green Firecaster (Epic)")
-petDropdown:Add("White Pheonix (Epic)")
-petDropdown:Add("Dark Legends Manticore (Epic)")
-petDropdown:Add("Ultimate Supernova Pegasus (Epic)")
-petDropdown:Add("Lightning Strike Phantom (Epic)")
-petDropdown:Add("Golden Viking (Epic)")
-
--- Unique Pets
-petDropdown:Add("Infernal Dragon (Unique)")
-petDropdown:Add("Ultra Birdie (Unique)")
-petDropdown:Add("Magic Butterfly (Unique)")
-petDropdown:Add("Aether Spirit Bunny (Unique)")
-petDropdown:Add("Cybernetic Showdown Dragon (Unique)")
-petDropdown:Add("Darkstar Hunter (Unique)")
-petDropdown:Add("Muscle Sensei (Unique)")
-petDropdown:Add("Neon Guardian (Unique)")
-
--- Aura dropdown
-local auraDropdown = pets:AddDropdown("Select Aura", function(text)
-    selectedAura = text
-    local crystal = findCrystalForItem(text)
-    print("Aura selected: " .. text .. " (Found in: " .. (crystal or "Unknown") .. ")")
-end)
-
--- Add all auras manually (sorted by rarity)
--- Basic Auras
-auraDropdown:Add("Blue Aura (Basic)")
-auraDropdown:Add("Green Aura (Basic)")
-auraDropdown:Add("Purple Aura (Basic)")
-auraDropdown:Add("Red Aura (Basic)")
-auraDropdown:Add("Yellow Aura (Basic)")
-auraDropdown:Add("Ultra Inferno  (Rare)")
-auraDropdown:Add("Azure Tundra (Epic)")
-auraDropdown:Add("Grand Supernova (Epic)")
-auraDropdown:Add("Muscle King (Unique)")
-auraDropdown:Add("Entropic Blast (Unique)")
-auraDropdown:Add("Eternal Megastrike (Unique)")
-
-pets:AddLabel("=== System to buys===")
-
--- Auto buy pet toggle
-pets:AddSwitch("Auto Buy Pet", function(bool)
-    _G.AutoBuyPet = bool
-    
-    if bool then
-        if selectedPet == "" then
-            print("Please select a pet first!")
-            return
-        end
-        
-        -- Extract pet name from dropdown selection (remove rarity part)
-        local petName = selectedPet:match("^(.-)%s*%(")
-        if not petName then
-            petName = selectedPet
-        end
-        
-        local crystal = findCrystalForItem(petName)
-        if not crystal then
-            print("Could not find crystal for pet: " .. petName)
-            return
-        end
-        
-        print("Auto buy pet started for: " .. petName .. " from " .. crystal)
-        spawn(function()
-            while _G.AutoBuyPet and selectedPet ~= "" do
-                local petToBuy = ReplicatedStorage.cPetShopFolder:FindFirstChild(petName)
-                if petToBuy then
-                    ReplicatedStorage.cPetShopRemote:InvokeServer(petToBuy)
-                    print("Bought pet: " .. petName)
-                else
-                    print("Pet not found: " .. petName)
-                end
-                task.wait(0.1)
-            end
-        end)
-    else
-        print("Auto buy pet stopped")
-    end
-end)
-
--- Auto buy aura toggle
-pets:AddSwitch("Auto buy Aura", function(bool)
-    _G.AutoBuyAura = bool
-    
-    if bool then
-        if selectedAura == "" then
-            print("Please select an aura first!")
-            return
-        end
-        
-        -- Extract aura name from dropdown selection (remove rarity part)
-        local auraName = selectedAura:match("^(.-)%s*%(")
-        if not auraName then
-            auraName = selectedAura
-        end
-        
-        local crystal = findCrystalForItem(auraName)
-        if not crystal then
-            print("Could not find crystal for aura: " .. auraName)
-            return
-        end
-        
-        print("Auto buy aura started for: " .. auraName .. " from " .. crystal)
-        spawn(function()
-            while _G.AutoBuyAura and selectedAura ~= "" do
-                local auraToBuy = ReplicatedStorage.cPetShopFolder:FindFirstChild(auraName)
-                if auraToBuy then
-                    ReplicatedStorage.cPetShopRemote:InvokeServer(auraToBuy)
-                    print("Bought aura: " .. auraName)
-                else
-                    print("Aura not found: " .. auraName)
-                end
-                task.wait(0.1)
-            end
-        end)
-    else
-        print("Auto buy aura stopped")
-    end
-end)
-
-
 
 local Gift = window:AddTab("Gift")
 Gift:AddLabel("Gifting Protein egg:").TextSize = 22
@@ -5021,6 +4725,234 @@ Gift:AddButton(
         end
     end
 )
+
+local Misc = window:AddTab("Misc")
+
+local function claimChests()
+    local lp = game:GetService("Players").LocalPlayer
+    local char = lp.Character
+    local root = char and char:FindFirstChild("HumanoidRootPart")
+    
+    if root then
+        local oldCF = root.CFrame
+        local chests = {
+            Vector3.new(42.25, 1.5, 408.91),    
+            Vector3.new(-138.43, 1.5, -276.86), 
+            Vector3.new(-2569.81, 1.5, -554.07),
+            Vector3.new(2206.88, 1.5, 910.50),  
+            Vector3.new(-6713.64, 1.5, -1456.67),
+            Vector3.new(4666.53, 995.0, -3692.08),
+            Vector3.new(-7913.11, -1.5, 3019.15) 
+        }
+        
+        for _, pos in ipairs(chests) do
+            root.CFrame = CFrame.new(pos)
+            task.wait(0.15) 
+		end
+        root.CFrame = oldCF
+    end
+end
+
+Misc:AddButton("📦 Auto Claim Chest", function()
+    claimChests()
+end)
+
+local blockedFrames = {
+	"strengthFrame",
+	"durabilityFrame",
+	"agilityFrame",
+	"evilKarmaFrame",
+	"goodKarmaFrame",
+}
+
+local frameSwitch = rebirths:AddSwitch("👁️‍🗨️ Hide All Frames", function(bool)
+	if bool then
+		for _, name in ipairs(blockedFrames) do
+			local frame = replicatedStorage:FindFirstChild(name)
+			if frame and frame:IsA("GuiObject") then
+				frame.Visible = false
+			end
+		end
+
+		if not _G.frameMonitorConnection then
+			_G.frameMonitorConnection = replicatedStorage.ChildAdded:Connect(function(child)
+				for _, name in ipairs(blockedFrames) do
+					if child.Name == name and child:IsA("GuiObject") then
+						child.Visible = false
+					end
+				end
+			end)
+		end
+	else
+		for _, name in ipairs(blockedFrames) do
+			local frame = replicatedStorage:FindFirstChild(name)
+			if frame and frame:IsA("GuiObject") then
+				frame.Visible = true
+			end
+		end
+
+		if _G.frameMonitorConnection then
+			_G.frameMonitorConnection:Disconnect()
+			_G.frameMonitorConnection = nil
+		end
+	end
+end)
+frameSwitch:Set(false)
+
+
+local switch = Misc:AddSwitch("🔒 Lock Position", function(Value)
+    if Value then
+        
+        local currentPos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+        getgenv().posLock = game:GetService("RunService").Heartbeat:Connect(function()
+            if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = currentPos
+            end
+        end)
+    else
+        
+        if getgenv().posLock then
+            getgenv().posLock:Disconnect()
+            getgenv().posLock = nil
+        end
+    end
+end)
+
+Misc:AddSwitch("🎰 Auto Fortune Wheel", function(Value)
+    _G.autoFortuneWheelActive = Value
+    if Value then
+        task.spawn(function()
+            while _G.autoFortuneWheelActive do
+                pcall(function()
+                    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+                    local wheelRemote = ReplicatedStorage.rEvents:FindFirstChild("openFortuneWheelRemote")
+                    
+                    local wheelChance = ReplicatedStorage:FindFirstChild("shared") 
+                        and ReplicatedStorage.shared:FindFirstChild("catalogs") 
+                        and ReplicatedStorage.shared.catalogs:FindFirstChild("fortuneWheelChances")
+                        and ReplicatedStorage.shared.catalogs.fortuneWheelChances:FindFirstChild("Fortune Wheel")
+                    
+                    if wheelRemote and wheelChance then
+                        wheelRemote:InvokeServer("openFortuneWheel", wheelChance)
+                    end
+                end)
+                task.wait(0.5)
+            end
+        end)
+    end
+end)
+
+local timeDropdown = Misc:AddDropdown("Change Time", function(selection)
+    local lighting = game:GetService("Lighting")
+    
+    if selection == "Night" then
+        lighting.ClockTime = 0
+    elseif selection == "Day" then
+        lighting.ClockTime = 12
+    elseif selection == "Midnight" then
+        lighting.ClockTime = 6
+    end
+    
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = "Changed Time",
+        Text = "the time has been changed: " .. selection,
+        Duration = 0
+    })
+end)
+
+timeDropdown:Add("Night")
+timeDropdown:Add("Day")
+timeDropdown:Add("Midnight")
+
+
+Misc:AddSwitch("🌊 Full Walk on Water", function(bool)
+    if bool then
+        createParts()
+    else
+        makePartsWalkthrough()
+    end
+end)
+
+Misc:AddSwitch("⬆️ Infinite Jump", function(state)
+    getgenv().InfiniteJump = state
+    game:GetService("UserInputService").JumpRequest:connect(function()
+        if getgenv().InfiniteJump then
+            local Humanoid = game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+            if Humanoid then
+                Humanoid:ChangeState("Jumping")
+            end
+        end
+    end)
+end)
+
+
+
+Misc:AddSwitch("🧱 Anti Knockback", function(Value)
+    if Value then
+        local playerName = game.Players.LocalPlayer.Name
+        local rootPart = game.Workspace:FindFirstChild(playerName):FindFirstChild("HumanoidRootPart")
+        local bodyVelocity = Instance.new("BodyVelocity")
+        bodyVelocity.MaxForce = Vector3.new(100000, 0, 100000)
+        bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+        bodyVelocity.P = 1250
+        bodyVelocity.Parent = rootPart
+    else
+        local playerName = game.Players.LocalPlayer.Name
+        local rootPart = game.Workspace:FindFirstChild(playerName):FindFirstChild("HumanoidRootPart")
+        local existingVelocity = rootPart:FindFirstChild("BodyVelocity")
+        if existingVelocity and existingVelocity.MaxForce == Vector3.new(100000, 0, 100000) then
+            existingVelocity:Destroy()
+        end
+    end
+end)
+
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local noclipEnabled = false
+local noclipConnection = nil
+
+local function startNoclip()
+    if noclipConnection then noclipConnection:Disconnect() end
+    
+    noclipConnection = RunService.Stepped:Connect(function()
+        if noclipEnabled and player.Character then
+            for _, part in pairs(player.Character:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.CanCollide = false
+                end
+            end
+        end
+    end)
+end
+
+Misc:AddSwitch("👻 No Clip", function(bool)
+    noclipEnabled = bool
+    
+    if noclipEnabled then
+        startNoclip()
+    else
+        if noclipConnection then
+            noclipConnection:Disconnect()
+            noclipConnection = nil
+        end
+        
+        if player.Character then
+            for _, part in pairs(player.Character:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.CanCollide = true
+                end
+            end
+        end
+    end
+end)
+
+player.CharacterAdded:Connect(function()
+    if noclipEnabled then
+        task.wait(0.1)
+        startNoclip()
+    end
+end)
 
 
 local Credits = window:AddTab("Credits")
