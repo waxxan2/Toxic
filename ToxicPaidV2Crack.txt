@@ -39,13 +39,6 @@ local window = library:AddWindow("Pulse Hub Public | Muscle Legends || Hello - "
 
 _G.window=window
 
--- VENTANA PRINCIPAL
-local window = library:AddWindow("⚠️ Toxic PAID V2 Deobfuscated By 228 ⚠️", {
-    main_color = Color3.fromRGB(34, 56, 34), 
-    min_size = Vector2.new(600, 820),
-    can_resize = false,
-})
-
 local AutoFarm = window:AddTab("Farm OP")
 AutoFarm:Show()
 
