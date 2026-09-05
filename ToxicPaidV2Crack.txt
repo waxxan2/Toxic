@@ -1,43 +1,26 @@
-local runService = game:GetService("RunService")
-local players = game:GetService("Players")
-local replicatedStorage = game:GetService("ReplicatedStorage")
-local starterPack = game:GetService("StarterPack")
-local lighting = game:GetService("Lighting")
-local v1 = game:GetService("Workspace")
-local starterGui = game:GetService("StarterGui")
-local virtualUser = game:GetService("VirtualUser")
-local stats = game:GetService("Stats")
-local userInputService = game:GetService("UserInputService")
+-- This script was created by Yusuf. If you intend to use this code to "skid," know this: skids only fool themselves; using someone else's code and passing it off as your own is for idiots.
 
-local library = loadstring(game:HttpGet("https://github.com/waxxan2/Pulse/raw/refs/heads/main/SynioxGui%20(3).txt"))()
-_G.library = library
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/SynioxStudios/Syniox-Ui/refs/heads/main/Syniox%20Gui.txt", true))()
+local displayName = game.Players.LocalPlayer.DisplayName
 
-local player = game.Players.LocalPlayer
-_G.player = player
-
-local displayName = player.DisplayName
-_G.displayName = displayName
-
-local window = library:AddWindow("Pulse Hub Public | Muscle Legends || Hello - " .. displayName, {
+local window = library:AddWindow("Syniox Public | Muscle Legends || HELLO - ".. displayName, {
     title_bar = {
-        Color3.fromRGB(30, 15, 45),
-        Color3.fromRGB(20, 10, 30),
-        Color3.fromRGB(12, 5, 20),
-    },
-    title_bar_transparency = 0.1,
+        Color3.fromRGB(120, 0, 160), 
+        Color3.fromRGB(30, 0, 40),  
+        Color3.fromRGB(0, 0, 0)    
+    }, 
+    title_bar_transparency = 0.1, 
     background = {
-        Color3.fromRGB(30, 15, 45),
-        Color3.fromRGB(20, 10, 30),
-        Color3.fromRGB(12, 5, 20)
-    },
-    background_transparency = 0.1,
-    main_color = Color3.fromRGB(30, 15, 45),
-    min_size = Vector2.new(430, 290),
-    can_resize = true
+        Color3.fromRGB(10, 0, 15), 
+        Color3.fromRGB(15, 5, 20), 
+        Color3.fromRGB(20, 10, 25)
+    }, 
+    background_transparency = 0.1, 
+    main_color = Color3.fromRGB(140, 0, 180), 
+    min_size = Vector2.new(450, 330), 
+    can_resize = true 
 })
 
-
-_G.window=window
 
 local AutoFarm = window:AddTab("Farm OP")
 AutoFarm:Show()
